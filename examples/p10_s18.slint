@@ -1,0 +1,11 @@
+// [T] 类型
+// 视频定位：P10 06:25
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「包进 Window」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+export component Example inherits Window {
+    in property <[string]> names: ["a", "b"];
+    // for name in names : Text { text: name; }
+    // names.length / names[0]
+    // names.push("c") / insert / remove
+}

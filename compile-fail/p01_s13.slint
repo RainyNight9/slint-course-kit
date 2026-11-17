@@ -1,0 +1,12 @@
+// 赋值，会掐断绑定
+// 视频定位：P01 04:59
+// 课程标注的诊断：warning: assignment will overwrite the binding
+// 来源：Slint 官方中文课程逐镜脚本，片段逐字保留，未补任何外壳。
+// 这是幻灯片上的节选，不是完整可编译单元；课程所讲的诊断需在完整组件中触发。
+// 本机 Slint 1.18.1 实测结果见 compile-fail/README.md。
+
+property <length> w: ta.mouse-x;  // 绑定
+
+clicked => {
+    w = 100px;  // 绑定被掐断，从此不跟随鼠标
+}

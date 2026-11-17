@@ -1,0 +1,13 @@
+// 取色走Palette
+// 视频定位：P15 03:24
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「import 置顶+包进 Window」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+import { Palette } from "std-widgets.slint";
+export component Example inherits Window {
+    Rectangle {
+        background: Palette.background;
+        border-color: Palette.border;
+        Text { color: Palette.foreground; }
+    }
+}

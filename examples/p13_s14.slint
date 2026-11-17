@@ -1,0 +1,14 @@
+// 第一个命中说了算
+// 视频定位：P13 04:44
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「原样」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+export component Example inherits Rectangle {
+    in-out property <int> level;
+    states [
+        error when level > 10: { background: red; }
+        warn  when level > 5:  { background: orange; }
+        idle  when true:       { background: gray; }
+    ]
+}
+// level = 12：三条都成立，取第一条

@@ -1,0 +1,4 @@
+/target/
+/tools/slintcheck/target/
+.DS_Store
+*.log

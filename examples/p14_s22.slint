@@ -1,0 +1,18 @@
+// 容器组件的插入位
+// 视频定位：P14 07:15
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「原样」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+component BoxWithLabel inherits GridLayout {
+    Row { Text { text: "标题"; } }
+    Row {
+        @children    // 使用处写的子元素落在这里
+    }
+}
+
+export component App inherits Window {
+    BoxWithLabel {
+        Rectangle { background: blue; }
+        Rectangle { background: yellow; }
+    }
+}

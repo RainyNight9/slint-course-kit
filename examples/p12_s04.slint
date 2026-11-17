@@ -1,0 +1,13 @@
+// 声明、处理、触发
+// 视频定位：P12 01:19
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「原样」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+export component Example inherits Rectangle {
+    callback hello;               // 声明
+    area := TouchArea {
+        clicked => {              // 处理
+            root.hello();          // 触发
+        }
+    }
+}

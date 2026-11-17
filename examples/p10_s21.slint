@@ -1,0 +1,11 @@
+// 开着几道窄门
+// 视频定位：P10 07:38
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「原样」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+export component Example {
+    in-out property <int> cut: 45.8;       // 45
+    in-out property <float> up: 42;        // 42.0
+    in-out property <string> s: "n=" + 42; // 文本拼接
+    // in-out property <int> bad: 12px;    // 报错
+}

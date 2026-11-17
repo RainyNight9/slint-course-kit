@@ -1,0 +1,13 @@
+// 比较与逻辑不可结合
+// 视频定位：P11 02:00
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「原样」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+export component Example {
+    in-out property <bool> a;
+    in-out property <bool> b;
+    in-out property <bool> c;
+    // a == b == c  报错：比较不可连写
+    out property <bool> same: (a == b) && (b == c);
+    out property <bool> either: (a && b) || c;
+}

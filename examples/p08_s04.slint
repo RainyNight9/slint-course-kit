@@ -1,0 +1,10 @@
+// 文件里可以住好几个
+// 视频定位：P08 01:25
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「原样」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+component IconLabel inherits Text { /* 仅本文件可见 */ }
+
+export component App inherits Window {
+    IconLabel { text: "hello"; }
+}

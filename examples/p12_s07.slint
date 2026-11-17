@@ -1,0 +1,11 @@
+// callback hello(int,int) -> int
+// 视频定位：P12 02:31
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「原样」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+export component Example inherits Rectangle {
+    callback hello(int, int) -> int;
+    hello(aa, bb) => { aa + bb }
+}
+// 本侧声明并实现；也可以只声明，
+// 处理器留给 Rust 的 on_hello 注册

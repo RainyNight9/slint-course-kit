@@ -1,0 +1,16 @@
+// 子元素撑起父元素
+// 视频定位：P14 03:47
+// 课程标注的诊断：error: The binding for the property 'text' is part of a binding loop
+// 来源：Slint 官方中文课程逐镜脚本，片段逐字保留，未补任何外壳。
+// 这是幻灯片上的节选，不是完整可编译单元；课程所讲的诊断需在完整组件中触发。
+// 本机 Slint 1.18.1 实测结果见 compile-fail/README.md。
+
+HorizontalLayout {
+    Rectangle {
+        in property <bool> show-title: true;
+        // 1.19 起，if 里的 Text 也参与父元素尺寸计算
+        if show-title: Text {
+            text: parent.width > 200px ? "Report" : "Q3";
+        }   // 子读父宽，父又跟着子变大
+    }
+}

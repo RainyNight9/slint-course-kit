@@ -1,0 +1,15 @@
+// 写在状态块里面
+// 视频定位：P13 06:03
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「原样」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+export component Example inherits Rectangle {
+    in-out property <bool> pressed;
+    states [
+        down when pressed: {
+            background: blue;
+            in  { animate background { duration: 120ms; } }
+            out { animate * { duration: 400ms; } }
+        }
+    ]
+}

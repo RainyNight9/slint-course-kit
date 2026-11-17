@@ -1,0 +1,13 @@
+// 模型可以就是一个整数
+// 视频定位：P05 03:49
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「包进 Window」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+export component Example inherits Window {
+    for i in 4 : Rectangle {
+        x: i * 74px;
+        width: 64px;
+        height: 64px;
+        background: #193076;
+    }
+}

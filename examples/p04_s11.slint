@@ -1,0 +1,15 @@
+// 把索引一起送出去
+// 视频定位：P04 03:32
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「原样」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+component MemoryTile inherits Rectangle {
+    callback picked(int);   // 带上索引
+}
+
+export component MainWindow inherits Window {
+    in-out property <int> last-picked: 0;
+    MemoryTile {
+        picked(index) => { root.last-picked = index; }
+    }
+}

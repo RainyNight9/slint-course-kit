@@ -1,0 +1,14 @@
+// 图标路径从哪里算起
+// 视频定位：P03 04:07
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「包进 Window」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+export component Example inherits Window {
+    // 文件在 ui/app-window.slint
+    Image {
+        // 相对 ui/，所以是 icons/ 而不是 ui/icons/
+        source: @image-url("icons/bus.png");
+        width: parent.width;
+        height: parent.height;
+    }
+}

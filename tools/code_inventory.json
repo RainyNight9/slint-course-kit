@@ -1,0 +1,1541 @@
+[
+ {
+  "ep": 1,
+  "slide": 4,
+  "title": "创建一个按钮，<em>要三行代码</em>",
+  "lang": "slint",
+  "src": "const button = document.createElement('button');\nbutton.textContent = 'Click me';\ndocument.body.appendChild(button);",
+  "cap": "命令式：描述的是操作步骤，不是界面本身",
+  "err": ""
+ },
+ {
+  "ep": 1,
+  "slide": 6,
+  "title": "React 和 SwiftUI 是<em>改造</em>",
+  "lang": "slint",
+  "src": "function ContentView() {\n  return <p style={{ fontSize: '2rem', color: 'green' }}>\n      Hello World\n    </p>;\n}",
+  "cap": "JSX：HTML 混在 JS 里，什么代码都塞得进来",
+  "err": ""
+ },
+ {
+  "ep": 1,
+  "slide": 8,
+  "title": "一门<em>纯声明式</em>语言",
+  "lang": "slint",
+  "src": "Rectangle {\n    width: 150px;\n    height: 60px;\n    background: white;\n    border-radius: 10px;\n\n    Text {\n        text: \"Hello World!\";\n        font-size: 24px;\n        color: black;\n    }\n}",
+  "cap": "Slint：元素、属性、嵌套，三个概念起步",
+  "err": ""
+ },
+ {
+  "ep": 1,
+  "slide": 10,
+  "title": "改一个值，<em>整块界面跟着动</em>",
+  "lang": "slint",
+  "src": "property <int> counter: 0;\n\nText {\n    text: \"Count: \" + counter;\n}\n\nTouchArea {\n    clicked => {\n        counter += 1;\n    }\n}",
+  "cap": "text 依赖 counter，counter 变了 text 自动重算",
+  "err": ""
+ },
+ {
+  "ep": 1,
+  "slide": 12,
+  "title": "一段绑定，<em>三个动态效果</em>",
+  "lang": "slint",
+  "src": "ta := TouchArea {}\n\nmyRect := Rectangle {\n    x: ta.mouse-x;\n    y: ta.mouse-y;\n    width: 60px;\n    background: ta.pressed ? orange : skyblue;\n    Text {\n        text: \"x: \" + (myRect.x / 1px);\n    }\n}",
+  "cap": "位置、颜色、文字——三处绑定，三处自动更新",
+  "err": ""
+ },
+ {
+  "ep": 1,
+  "slide": 13,
+  "title": "赋值，会<em>掐断</em>绑定",
+  "lang": "slint",
+  "src": "property <length> w: ta.mouse-x;  // 绑定\n\nclicked => {\n    w = 100px;  // 绑定被掐断，从此不跟随鼠标\n}",
+  "cap": "赋值会覆盖并断开原有绑定",
+  "err": "warning: assignment will overwrite the binding"
+ },
+ {
+  "ep": 1,
+  "slide": 15,
+  "title": "debug 与 <em>pure</em>",
+  "lang": "slint",
+  "src": "pure function half(n: float) -> float {\n    return n / 2;\n}\n\nwidth: half(root.width);  // 纯函数才能进绑定\n\nclicked => {\n    debug(\"clicked!\");   // debug 可在回调里直接用\n}",
+  "cap": "pure 函数可进绑定；debug 是回调里的调试出口",
+  "err": ""
+ },
+ {
+  "ep": 1,
+  "slide": 17,
+  "title": "Rust 侧只有<em>三行</em>",
+  "lang": "rust",
+  "src": "slint::include_modules!();\n\nfn main() -> Result<(), slint::PlatformError> {\n    let app = App::new()?;\n    app.run()\n}",
+  "cap": "slint::include_modules! 把 .slint 编成强类型代码",
+  "err": ""
+ },
+ {
+  "ep": 2,
+  "slide": 5,
+  "title": "构建依赖要加 <em>--build</em>",
+  "lang": "rust",
+  "src": "# 运行时依赖\ncargo add slint\n\n# 构建依赖：只在编译期跑\ncargo add --build slint-build",
+  "cap": "一个进 dependencies，一个进 build-dependencies",
+  "err": ""
+ },
+ {
+  "ep": 2,
+  "slide": 6,
+  "title": "Cargo.toml、build.rs 与 <em>ui 目录</em>",
+  "lang": "slint",
+  "src": "// build.rs\nfn main() {\n    slint_build::compile(\"ui/app-window.slint\").unwrap();\n}",
+  "cap": "构建期编译 UI，生成 Rust 代码",
+  "err": ""
+ },
+ {
+  "ep": 2,
+  "slide": 8,
+  "title": "以<em>包根目录</em>为基准",
+  "lang": "rust",
+  "src": "// build.rs 的当前目录是包根，不是 src/\nfn main() {\n    slint_build::compile(\"ui/app-window.slint\")\n        .expect(\"编译 .slint 失败\");\n}",
+  "cap": "路径写错，报的错会指向找不到文件",
+  "err": ""
+ },
+ {
+  "ep": 2,
+  "slide": 9,
+  "title": "include_modules! 的<em>魔法</em>",
+  "lang": "rust",
+  "src": "slint::include_modules!();\n\nfn main() -> Result<(), slint::PlatformError> {\n    let main_window = MainWindow::new()?;\n    main_window.run()\n}",
+  "cap": "组件名 = Rust 结构体名",
+  "err": ""
+ },
+ {
+  "ep": 2,
+  "slide": 10,
+  "title": "组件名决定<em>结构体名</em>",
+  "lang": "slint",
+  "src": "// ui/app-window.slint\nexport component MainWindow inherits Window {\n    // 导出的名字，就是 Rust 侧的类型名\n}",
+  "cap": "文件名随你起，组件名要对得上",
+  "err": ""
+ },
+ {
+  "ep": 2,
+  "slide": 11,
+  "title": "run 是<em>事件循环</em>，不是显示",
+  "lang": "rust",
+  "src": "slint::include_modules!();\n\nfn main() -> Result<(), slint::PlatformError> {\n    let app = MainWindow::new()?;   // 构造窗口\n    app.run()                       // 关窗才返回\n}",
+  "cap": "include_modules! 引入 build.rs 的产物",
+  "err": ""
+ },
+ {
+  "ep": 2,
+  "slide": 12,
+  "title": "Window 里放个 <em>Text</em>",
+  "lang": "slint",
+  "src": "export component MainWindow inherits Window {\n    Text {\n        text: \"Hello World!\";\n        color: green;\n        font-size: 24px;\n    }\n}",
+  "cap": "Tutorial 的第一个界面",
+  "err": ""
+ },
+ {
+  "ep": 2,
+  "slide": 14,
+  "title": "文字也能<em>居中与着色</em>",
+  "lang": "slint",
+  "src": "Text {\n    text: \"Hello World!\";\n    color: green;\n    font-size: 24px;\n    horizontal-alignment: center;\n    vertical-alignment: center;\n}",
+  "cap": "对齐效果取决于元素自身有没有余量",
+  "err": ""
+ },
+ {
+  "ep": 2,
+  "slide": 16,
+  "title": "不写宿主也能<em>看界面</em>",
+  "lang": "rust",
+  "src": "cargo install --locked slint-viewer\n\n# 开窗预览，保存即刷新\nslint-viewer --auto-reload ui/app-window.slint",
+  "cap": "单文件预览，绕过 Rust 编译",
+  "err": ""
+ },
+ {
+  "ep": 2,
+  "slide": 18,
+  "title": "改 .slint <em>不重启程序</em>",
+  "lang": "rust",
+  "src": "# 开发时专用，别写进 Cargo.toml\nSLINT_LIVE_PREVIEW=1 \\\n  cargo run --features slint/live-preview",
+  "cap": "仅限开发，发布版不要带",
+  "err": ""
+ },
+ {
+  "ep": 2,
+  "slide": 21,
+  "title": "feature 只写在<em>命令行</em>",
+  "lang": "rust",
+  "src": "# 开发：显式开启\nSLINT_LIVE_PREVIEW=1 cargo run --features slint/live-preview\n\n# 发布：不带 feature，走编译期生成\ncargo build --release",
+  "cap": "环境变量与 feature 缺一不可",
+  "err": ""
+ },
+ {
+  "ep": 3,
+  "slide": 5,
+  "title": "component MemoryTile <em>inherits Rectangle</em>",
+  "lang": "slint",
+  "src": "component MemoryTile inherits Rectangle {\n    width: 64px;\n    height: 64px;\n    background: #3960D5;\n}",
+  "cap": "64 逻辑像素的蓝色方块",
+  "err": ""
+ },
+ {
+  "ep": 3,
+  "slide": 6,
+  "title": "选基类就是<em>选能力</em>",
+  "lang": "slint",
+  "src": "// inherits 把底板的属性全继承下来\ncomponent MemoryTile inherits Rectangle {\n    width: 64px;        // 都来自 Rectangle\n    height: 64px;\n    background: #3960D5;\n}",
+  "cap": "继承谁，就拥有谁的能力",
+  "err": ""
+ },
+ {
+  "ep": 3,
+  "slide": 9,
+  "title": "px 之外还有<em>百分比与 rem</em>",
+  "lang": "slint",
+  "src": "Rectangle {\n    width: 50%;           // 等于 parent.width / 2\n    height: 40px;\n    Text {\n        font-size: 1.2rem; // 跟窗口默认字号联动\n    }\n}",
+  "cap": "单位不同，语义就不同",
+  "err": ""
+ },
+ {
+  "ep": 3,
+  "slide": 11,
+  "title": "Image + <em>@image-url</em>",
+  "lang": "slint",
+  "src": "component MemoryTile inherits Rectangle {\n    width: 64px;\n    height: 64px;\n    background: #3960D5;\n\n    Image {\n        source: @image-url(\"icons/bus.png\");\n        width: parent.width;\n        height: parent.height;\n    }\n}",
+  "cap": "图标铺满整个矩形",
+  "err": ""
+ },
+ {
+  "ep": 3,
+  "slide": 12,
+  "title": "图标路径<em>从哪里算起</em>",
+  "lang": "slint",
+  "src": "// 文件在 ui/app-window.slint\nImage {\n    // 相对 ui/，所以是 icons/ 而不是 ui/icons/\n    source: @image-url(\"icons/bus.png\");\n    width: parent.width;\n    height: parent.height;\n}",
+  "cap": "路径在编译期解析，写错就编不过",
+  "err": ""
+ },
+ {
+  "ep": 3,
+  "slide": 16,
+  "title": "export + <em>MainWindow</em>",
+  "lang": "slint",
+  "src": "export component MainWindow inherits Window {\n    MemoryTile { }\n}",
+  "cap": "入口组件必须导出",
+  "err": ""
+ },
+ {
+  "ep": 3,
+  "slide": 17,
+  "title": "声明处导出与<em>集中导出</em>",
+  "lang": "slint",
+  "src": "export component MainWindow inherits Window {\n    MemoryTile { }\n}\n\n// 等价写法：先定义，再集中导出\n// export { MemoryTile }",
+  "cap": "默认私有，导出才对外",
+  "err": ""
+ },
+ {
+  "ep": 3,
+  "slide": 19,
+  "title": "第二块<em>白捡的一样</em>",
+  "lang": "slint",
+  "src": "export component MainWindow inherits Window {\n    MemoryTile { x: 20px; y: 20px; }\n    MemoryTile { x: 94px; y: 20px; }\n}",
+  "cap": "实例化两次，等于复制一份能力",
+  "err": ""
+ },
+ {
+  "ep": 4,
+  "slide": 6,
+  "title": "透明的<em>点击区域</em>",
+  "lang": "slint",
+  "src": "TouchArea {\n    clicked => {\n        // 响应点击\n    }\n}",
+  "cap": "透明但拦截输入",
+  "err": ""
+ },
+ {
+  "ep": 4,
+  "slide": 7,
+  "title": "pressed 与 <em>has-hover</em>",
+  "lang": "slint",
+  "src": "area := TouchArea { }\n\nText {\n    text: area.has-hover ? \"悬停中\" : \"移开了\";\n    color: area.pressed ? red : black;\n}",
+  "cap": "一个 id，把输入状态接给任意元素",
+  "err": ""
+ },
+ {
+  "ep": 4,
+  "slide": 9,
+  "title": "回调<em>转发</em>",
+  "lang": "slint",
+  "src": "component MemoryTile inherits Rectangle {\n    callback clicked;      // 对外声明\n\n    TouchArea {\n        clicked => {\n            root.clicked();   // 转发给使用者\n        }\n    }\n}",
+  "cap": "root = 组件最外层元素",
+  "err": ""
+ },
+ {
+  "ep": 4,
+  "slide": 11,
+  "title": "把<em>索引</em>一起送出去",
+  "lang": "slint",
+  "src": "component MemoryTile inherits Rectangle {\n    callback picked(int);   // 带上索引\n}\n\nexport component MainWindow inherits Window {\n    in-out property <int> last-picked: 0;\n    MemoryTile {\n        picked(index) => { root.last-picked = index; }\n    }\n}",
+  "cap": "声明写类型，处理器自己起参数名",
+  "err": ""
+ },
+ {
+  "ep": 4,
+  "slide": 12,
+  "title": "clicked => { <em>翻转</em> }",
+  "lang": "slint",
+  "src": "MemoryTile {\n    icon: @image-url(\"icons/bus.png\");\n    clicked => {\n        self.open_curtain = !self.open_curtain;\n    }\n}",
+  "cap": "self = 当前元素",
+  "err": ""
+ },
+ {
+  "ep": 4,
+  "slide": 14,
+  "title": "翻转的动作在<em>使用者</em>那边",
+  "lang": "slint",
+  "src": "component MemoryTile inherits Rectangle {\n    callback clicked;\n    in property <bool> open_curtain;   // 由使用者设值\n}\n\nexport component MainWindow inherits Window {\n    MemoryTile {\n        clicked => { self.open_curtain = !self.open_curtain; }\n    }\n}",
+  "cap": "in 属性由外层组件赋值",
+  "err": ""
+ },
+ {
+  "ep": 4,
+  "slide": 15,
+  "title": "宽度动画<em>滑开</em>",
+  "lang": "slint",
+  "src": "// 左幕布\nRectangle {\n    background: #193076;\n    width: open_curtain ? 0px : (parent.width / 2);\n    height: parent.height;\n    animate width { duration: 250ms; easing: ease-in; }\n}\n// 右幕布的 x 与 width 同理",
+  "cap": "宽度归零 = 幕布拉开",
+  "err": ""
+ },
+ {
+  "ep": 4,
+  "slide": 17,
+  "title": "两个尺寸<em>谁是源头</em>",
+  "lang": "slint",
+  "src": "component Tag inherits Rectangle {\n    in property <bool> show-text: true;\n\n    HorizontalLayout {\n        Rectangle {\n            if root.show-text : Text {\n                // 父宽由内容撑开，读它就成环\n                text: parent.width > 200px ? \"配对成功\" : \"再来\";\n            }\n        }\n    }\n}",
+  "cap": "尺寸互相依赖，编译器会拦住",
+  "err": "The binding for the property 'text' is part of a binding loop"
+ },
+ {
+  "ep": 4,
+  "slide": 18,
+  "title": "三元 + <em>800ms 过渡</em>",
+  "lang": "slint",
+  "src": "background: solved ? #34CE57 : #3960D5;\nanimate background { duration: 800ms; }",
+  "cap": "状态改变配色，动画柔化过渡",
+  "err": ""
+ },
+ {
+  "ep": 4,
+  "slide": 19,
+  "title": "名字、十六进制与<em>命名空间</em>",
+  "lang": "slint",
+  "src": "background: solved ? #34CE57 : #3960D5;\ncolor: white;              // CSS 颜色名\n// border-color: \"white\";  // 错：加了引号就成了字符串",
+  "cap": "颜色是值，不是字符串",
+  "err": ""
+ },
+ {
+  "ep": 4,
+  "slide": 20,
+  "title": "从写死到<em>可配置</em>",
+  "lang": "slint",
+  "src": "component MemoryTile inherits Rectangle {\n    in property <image> icon;   // 可配置\n\n    Image { source: icon; }\n}\n// 使用：MemoryTile { icon: @image-url(\"icons/at.png\"); }",
+  "cap": "会变的提炼成属性",
+  "err": ""
+ },
+ {
+  "ep": 4,
+  "slide": 21,
+  "title": "export 之后还要 <em>import</em>",
+  "lang": "slint",
+  "src": "import { MemoryTile } from \"memory_tile.slint\";\n\nexport component MainWindow inherits Window {\n    MemoryTile { icon: @image-url(\"icons/bus.png\"); }\n}",
+  "cap": "拆文件是复用的第一步",
+  "err": ""
+ },
+ {
+  "ep": 5,
+  "slide": 3,
+  "title": "struct <em>TileData</em>",
+  "lang": "slint",
+  "src": "struct TileData {\n    image: image,\n    image_visible: bool,\n    solved: bool,\n}",
+  "cap": "三个字段：图标、是否翻开、是否已配对",
+  "err": ""
+ },
+ {
+  "ep": 5,
+  "slide": 4,
+  "title": "省略的字段取<em>默认值</em>",
+  "lang": "slint",
+  "src": "in-out property <[TileData]> memory_tiles: [\n    { image: @image-url(\"icons/at.png\") },\n    // image_visible 与 solved 省略 → false\n];",
+  "cap": "省略即默认，bool 默认 false",
+  "err": ""
+ },
+ {
+  "ep": 5,
+  "slide": 6,
+  "title": "<em>[TileData]</em> 一列瓷砖",
+  "lang": "slint",
+  "src": "export component MainWindow inherits Window {\n    width: 326px;\n    height: 326px;\n\n    in-out property <[TileData]> memory_tiles: [\n        { image: @image-url(\"icons/at.png\") },\n        { image: @image-url(\"icons/balance-scale.png\") },\n        { image: @image-url(\"icons/bicycle.png\") },\n        { image: @image-url(\"icons/bus.png\") },\n        // ... 共 8 个图标\n    ];\n}",
+  "cap": "方括号类型 + 内联数组字面量",
+  "err": ""
+ },
+ {
+  "ep": 5,
+  "slide": 7,
+  "title": "它会在变化时<em>通知界面</em>",
+  "lang": "slint",
+  "src": "Text {\n    text: \"共 \" + memory_tiles.length + \" 块\";\n}",
+  "cap": "length 可读不可写",
+  "err": ""
+ },
+ {
+  "ep": 5,
+  "slide": 9,
+  "title": "for tile[i] <em>in</em> memory_tiles",
+  "lang": "slint",
+  "src": "for tile[i] in memory_tiles : MemoryTile {\n    x: mod(i, 4) * 74px;\n    y: floor(i / 4) * 74px;\n    width: 64px;\n    height: 64px;\n    icon: tile.image;\n    open_curtain: tile.image_visible || tile.solved;\n    clicked => {\n        tile.image_visible = !tile.image_visible;\n    }\n}",
+  "cap": "模型变，界面自动跟着变",
+  "err": ""
+ },
+ {
+  "ep": 5,
+  "slide": 11,
+  "title": "模型可以<em>就是一个整数</em>",
+  "lang": "slint",
+  "src": "for i in 4 : Rectangle {\n    x: i * 74px;\n    width: 64px;\n    height: 64px;\n    background: #193076;\n}",
+  "cap": "纯计数时不必造一个数组",
+  "err": ""
+ },
+ {
+  "ep": 5,
+  "slide": 14,
+  "title": "复制一份，凑成<em>对子</em>",
+  "lang": "rust",
+  "src": "use slint::Model;\n\nlet mut tiles: Vec<TileData> =\n    main_window.get_memory_tiles().iter().collect();\n// 复制一份，保证每张图都有配对\ntiles.extend(tiles.clone());",
+  "cap": "get_ 前缀：Slint 为顶层属性生成 getter",
+  "err": ""
+ },
+ {
+  "ep": 5,
+  "slide": 15,
+  "title": "get_ 与 <em>row_count</em>",
+  "lang": "rust",
+  "src": "use slint::Model;\n\nlet count = main_window.get_memory_tiles().row_count();",
+  "cap": "trait 不在作用域，方法就找不到",
+  "err": ""
+ },
+ {
+  "ep": 5,
+  "slide": 16,
+  "title": "<em>复制品</em>，不是引用",
+  "lang": "rust",
+  "src": "let tile = main_window.get_memory_tiles()\n    .row_data(0)\n    .unwrap();\n// tile 是副本，改它不影响界面",
+  "cap": "row_data 拿到的是值",
+  "err": ""
+ },
+ {
+  "ep": 5,
+  "slide": 17,
+  "title": "rand 洗牌 + <em>VecModel</em>",
+  "lang": "rust",
+  "src": "use rand::seq::SliceRandom;\nlet mut rng = rand::rng();\ntiles.shuffle(&mut rng);\n\nlet tiles_model = std::rc::Rc::new(slint::VecModel::from(tiles));\nmain_window.set_memory_tiles(tiles_model.clone().into());",
+  "cap": "生成的模型只读，可变模型要自己包 VecModel",
+  "err": ""
+ },
+ {
+  "ep": 5,
+  "slide": 19,
+  "title": "每一层<em>都有原因</em>",
+  "lang": "rust",
+  "src": "let model = std::rc::Rc::new(slint::VecModel::from(tiles));\nmain_window.set_memory_tiles(model.clone().into());\n// 留一份给后面的回调",
+  "cap": "clone 加计数，不复制数据",
+  "err": ""
+ },
+ {
+  "ep": 6,
+  "slide": 3,
+  "title": "callback <em>check_if_pair_solved</em>",
+  "lang": "slint",
+  "src": "export component MainWindow inherits Window {\n    callback check_if_pair_solved();   // 新增：通知 Rust 判定\n    in property <bool> disable_tiles;  // 新增：等待期间锁盘\n\n    in-out property <[TileData]> memory_tiles: [ /* ... */ ];",
+  "cap": "回调是组件对外的「事件出口」",
+  "err": ""
+ },
+ {
+  "ep": 6,
+  "slide": 4,
+  "title": "没有函数体的<em>签名</em>",
+  "lang": "slint",
+  "src": "export component MainWindow inherits Window {\n    callback check_if_pair_solved();\n    callback tile-clicked(int, string);   // 参数照写类型\n}",
+  "cap": "回调只有签名，没有函数体",
+  "err": ""
+ },
+ {
+  "ep": 6,
+  "slide": 6,
+  "title": "先判断，<em>再翻开</em>",
+  "lang": "slint",
+  "src": "for tile[i] in memory_tiles : MemoryTile {\n    // ...\n    clicked => {\n        if (!root.disable_tiles) {\n            tile.image_visible = true;\n            root.check_if_pair_solved();\n        }\n    }\n}",
+  "cap": "把判定时机交给 Rust，UI 只上报",
+  "err": ""
+ },
+ {
+  "ep": 6,
+  "slide": 8,
+  "title": "on_ 前缀注册<em>处理器</em>",
+  "lang": "rust",
+  "src": "let main_window_weak = main_window.as_weak();\nmain_window.on_check_if_pair_solved(move || {\n    let mut flipped_tiles = tiles_model.iter().enumerate()\n        .filter(|(_, tile)| tile.image_visible && !tile.solved);\n    // 取出前两张翻开的牌，进入判定……\n});",
+  "cap": "on_ 前缀：为回调注册处理器",
+  "err": ""
+ },
+ {
+  "ep": 6,
+  "slide": 9,
+  "title": "move 搬走了<em>什么</em>",
+  "lang": "rust",
+  "src": "let main_window_weak = main_window.as_weak();\nmain_window.on_check_if_pair_solved(move || {\n    // tiles_model 整份搬进闭包，Rc 只是计数 +1\n    let mut flipped = tiles_model.iter().enumerate()\n        .filter(|(_, t)| t.image_visible && !t.solved);\n    // ...\n});",
+  "cap": "move 搬值，as_weak 却让窗口搬得很轻",
+  "err": ""
+ },
+ {
+  "ep": 6,
+  "slide": 10,
+  "title": "t1 只是<em>一份拷贝</em>",
+  "lang": "rust",
+  "src": "// t1 是拷贝：改它，模型不会变\nt1.solved = true;\n// 必须写回，绿色背景才会出现\ntiles_model.set_row_data(t1_idx, t1);",
+  "cap": "读出来是拷贝，写回去要显式调用",
+  "err": ""
+ },
+ {
+  "ep": 6,
+  "slide": 11,
+  "title": "标记 <em>solved</em> 写回模型",
+  "lang": "rust",
+  "src": "let is_pair_solved = t1 == t2;\nif is_pair_solved {\n    t1.solved = true;\n    tiles_model.set_row_data(t1_idx, t1);\n    t2.solved = true;\n    tiles_model.set_row_data(t2_idx, t2);\n}",
+  "cap": "set_row_data：精确更新一行，UI 自动刷新",
+  "err": ""
+ },
+ {
+  "ep": 6,
+  "slide": 12,
+  "title": "一次只<em>动一行</em>",
+  "lang": "rust",
+  "src": "tiles_model.set_row_data(t1_idx, t1);   // 只刷新这一行\n\n// 对比：整体替换，所有行都会重建\nmain_window.set_memory_tiles(tiles_model.clone().into());",
+  "cap": "粒度不同，重建范围就不同",
+  "err": ""
+ },
+ {
+  "ep": 6,
+  "slide": 14,
+  "title": "锁盘 + <em>一秒后合上</em>",
+  "lang": "rust",
+  "src": "main_window.set_disable_tiles(true);\nslint::Timer::single_shot(std::time::Duration::from_secs(1), move || {\n    main_window.set_disable_tiles(false);\n    t1.image_visible = false;\n    tiles_model.set_row_data(t1_idx, t1);\n    t2.image_visible = false;\n    tiles_model.set_row_data(t2_idx, t2);\n});",
+  "cap": "single_shot：延迟执行一次的定时器",
+  "err": ""
+ },
+ {
+  "ep": 6,
+  "slide": 15,
+  "title": "single_shot 是<em>静态函数</em>",
+  "lang": "rust",
+  "src": "// 一次性：静态函数，不用持有对象\nslint::Timer::single_shot(std::time::Duration::from_secs(1), move || {\n    /* 一秒后执行一次 */\n});\n\n// 周期性：需要持有 Timer 实例，drop 掉就停\nlet mut timer = slint::Timer::default();",
+  "cap": "single_shot 一次即止，实例 Timer 要保活",
+  "err": ""
+ },
+ {
+  "ep": 6,
+  "slide": 16,
+  "title": "把窗口<em>搬进定时器</em>",
+  "lang": "rust",
+  "src": "let window = main_window_weak.unwrap();\nwindow.set_disable_tiles(true);\nlet tiles_model = tiles_model.clone();\nslint::Timer::single_shot(std::time::Duration::from_secs(1), move || {\n    window.set_disable_tiles(false);\n    t1.image_visible = false;\n    tiles_model.set_row_data(t1_idx, t1);\n});",
+  "cap": "移动语义：谁要在闭包里活，谁就得被搬进去",
+  "err": ""
+ },
+ {
+  "ep": 7,
+  "slide": 6,
+  "title": "cargo install <em>wasm-pack</em>",
+  "lang": "rust",
+  "src": "# 安装工具（一次性）\ncargo install wasm-pack\n\n# Cargo.toml：仅 wasm 目标生效的依赖\n[target.'cfg(target_arch = \"wasm32\")'.dependencies]\nwasm-bindgen = { version = \"0.2\" }\ngetrandom = { version = \"0.4\", features = [\"wasm_js\"] }",
+  "cap": "getrandom 必须开 wasm_js feature 才能在浏览器出随机数",
+  "err": ""
+ },
+ {
+  "ep": 7,
+  "slide": 8,
+  "title": "浏览器<em>没有熵源</em>",
+  "lang": "rust",
+  "src": "[target.'cfg(target_arch = \"wasm32\")'.dependencies]\nwasm-bindgen = { version = \"0.2\" }\ngetrandom = { version = \"0.4\", features = [\"wasm_js\"] }",
+  "cap": "target 段意味着只在 wasm32 目标生效",
+  "err": ""
+ },
+ {
+  "ep": 7,
+  "slide": 9,
+  "title": "crate-type = <em>[\"cdylib\"]</em>",
+  "lang": "rust",
+  "src": "[lib]\npath = \"src/main.rs\"\ncrate-type = [\"cdylib\"]",
+  "cap": "wasm-pack 的硬性要求",
+  "err": ""
+ },
+ {
+  "ep": 7,
+  "slide": 10,
+  "title": "为什么不能<em>交个可执行文件</em>",
+  "lang": "rust",
+  "src": "[lib]\npath = \"src/main.rs\"\ncrate-type = [\"cdylib\"]",
+  "cap": "同一个 main.rs，两种编译形态",
+  "err": ""
+ },
+ {
+  "ep": 7,
+  "slide": 12,
+  "title": "wasm_bindgen<em>(start)</em>",
+  "lang": "rust",
+  "src": "#[cfg_attr(target_arch = \"wasm32\",\n           wasm_bindgen::prelude::wasm_bindgen(start))]\npub fn main() {\n    // ……原有逻辑不变\n}",
+  "cap": "桌面、Web 一份代码",
+  "err": ""
+ },
+ {
+  "ep": 7,
+  "slide": 13,
+  "title": "一条属性，<em>两个平台</em>",
+  "lang": "rust",
+  "src": "#[cfg_attr(target_arch = \"wasm32\",\n           wasm_bindgen::prelude::wasm_bindgen(start))]\npub fn main() {\n    // 逻辑一行没改\n}",
+  "cap": "条件成立才加属性，桌面构建不受影响",
+  "err": ""
+ },
+ {
+  "ep": 7,
+  "slide": 16,
+  "title": "--target web <em>决定形态</em>",
+  "lang": "rust",
+  "src": "wasm-pack build --release --target web\n\n# --release      优化体积与速度\n# --target web   原生 ES 模块，页面直接 import",
+  "cap": "不带 --target 时默认是 bundler",
+  "err": ""
+ },
+ {
+  "ep": 7,
+  "slide": 18,
+  "title": "id 必须是 <em>canvas</em>",
+  "lang": "slint",
+  "src": "<html>\n  <body>\n    <canvas id=\"canvas\"></canvas>\n    <script type=\"module\">\n      import init from \"./pkg/memory.js\";\n      init();\n    </script>\n  </body>\n</html>",
+  "cap": "id 是运行时约定，不能改",
+  "err": ""
+ },
+ {
+  "ep": 7,
+  "slide": 19,
+  "title": "圆角与<em>牌背</em>",
+  "lang": "slint",
+  "src": "Rectangle {\n    clip: true;   // 收拢时裁掉牌背\n    Image {\n        source: @image-url(\"icons/tile-back.png\");\n    }\n}",
+  "cap": "clip: true 让子元素随矩形裁剪",
+  "err": ""
+ },
+ {
+  "ep": 7,
+  "slide": 20,
+  "title": "不裁，牌背就<em>露出来</em>",
+  "lang": "slint",
+  "src": "Rectangle {\n    clip: true;                      // 收拢时裁掉牌背\n    border-radius: 8px;              // 官方作业其一\n\n    Image { source: @image-url(\"icons/tile-back.png\"); }\n}",
+  "cap": "clip 是父元素对子元素的裁剪开关",
+  "err": ""
+ },
+ {
+  "ep": 8,
+  "slide": 3,
+  "title": "component + <em>inherits</em>",
+  "lang": "slint",
+  "src": "component MyButton inherits Text {\n    color: black;\n    // ...\n}\n\nexport component MyApp inherits Window {\n    // ...\n}",
+  "cap": "不导出的组件只在文件内可见",
+  "err": ""
+ },
+ {
+  "ep": 8,
+  "slide": 4,
+  "title": "文件里可以<em>住好几个</em>",
+  "lang": "slint",
+  "src": "component IconLabel inherits Text { /* 仅本文件可见 */ }\n\nexport component App inherits Window {\n    IconLabel { text: \"hello\"; }\n}",
+  "cap": "只有 export 的那个对外可见",
+  "err": ""
+ },
+ {
+  "ep": 8,
+  "slide": 5,
+  "title": "1.20 是<em>语法版本</em>",
+  "lang": "rust",
+  "src": "slint::slint! {\n    #[edition = \"1.20\"]\n    export component App inherits Window { }\n}",
+  "cap": "项目文件里则写 edition 字段",
+  "err": ""
+ },
+ {
+  "ep": 8,
+  "slide": 9,
+  "title": "<em>:=</em> 命名语法",
+  "lang": "slint",
+  "src": "export component MyApp inherits Window {\n    hello := MyButton {\n        x: 0;\n        text: \"hello\";\n    }\n    world := MyButton {\n        x: hello.x + 50px;   // 用名字引用其他元素\n        text: \"world\";\n    }\n}\n// root / self / parent 是三个保留名",
+  "cap": "起名后即可点路径访问",
+  "err": ""
+ },
+ {
+  "ep": 8,
+  "slide": 10,
+  "title": ":= 不是<em>变量声明</em>",
+  "lang": "slint",
+  "src": "export component App inherits Window {\n    hello := MyButton { text: \"hello\"; }\n    world := MyButton { x: hello.x + 50px; }\n}",
+  "cap": "名字用于同组件内的路径寻址",
+  "err": ""
+ },
+ {
+  "ep": 8,
+  "slide": 12,
+  "title": "// 与 <em>/* */</em>",
+  "lang": "slint",
+  "src": "// 单行注释：这一行被忽略\n/*\n   多行注释\n   可以跨很多行\n*/\nRectangle { /* 行内也行 */ background: white; }",
+  "cap": "与 Rust / C 同款",
+  "err": ""
+ },
+ {
+  "ep": 8,
+  "slide": 14,
+  "title": "export 与 <em>import</em>",
+  "lang": "slint",
+  "src": "// button.slint 里：\nexport component Button { /* ... */ }\n\n// main.slint 里：\nimport { Button } from \"./button.slint\";\n\nexport component App inherits Rectangle {\n    Button { /* ... */ }\n}",
+  "cap": "默认私有，导出才可见",
+  "err": ""
+ },
+ {
+  "ep": 8,
+  "slide": 15,
+  "title": "相对于<em>当前文件</em>",
+  "lang": "slint",
+  "src": "// ui/main.slint\nimport { Button } from \"./button.slint\";\n// 写成 \"button.slint\" 会被当成库名，解析失败\n\nexport component App inherits Rectangle {\n    Button { text: \"ok\"; }\n}",
+  "cap": "路径相对当前文件，且要带扩展名",
+  "err": ""
+ },
+ {
+  "ep": 8,
+  "slide": 18,
+  "title": "目录，还是<em>项目文件</em>",
+  "lang": "slint",
+  "src": "{\n    \"edition\": \"1.20\",\n    \"main\": \"ui/main.slint\",\n    \"library-paths\": {\n        \"mylibrary\": \"third_party/mylibrary\",\n        \"otherlibrary\": \"third_party/otherlib/slint-project.json\"\n    }\n}",
+  "cap": "指向目录是松散引入，指向项目文件可保留库设置",
+  "err": ""
+ },
+ {
+  "ep": 9,
+  "slide": 3,
+  "title": "属性名: 值;<em>分号结尾</em>",
+  "lang": "slint",
+  "src": "export component Example inherits Window {\n    // 简单表达式：分号结尾\n    width: 42px;\n    // 或代码块（不需要分号）\n    height: { 42px }\n}",
+  "cap": "两种赋值形态",
+  "err": ""
+ },
+ {
+  "ep": 9,
+  "slide": 5,
+  "title": "分号与<em>返回</em>",
+  "lang": "slint",
+  "src": "export component Example inherits Rectangle {\n    width: 42px;              // 表达式 + 分号\n    height: { 42px }          // 代码块，末值是返回值\n\n    touch := TouchArea { }\n    background: {\n        if (touch.pressed) { return red; }\n        return blue;\n    }\n}",
+  "cap": "代码块绑定必须有返回值",
+  "err": ""
+ },
+ {
+  "ep": 9,
+  "slide": 6,
+  "title": "依赖变了，<em>自动重算</em>",
+  "lang": "slint",
+  "src": "export component Example {\n    in-out property<int> my-property;\n\n    // 这是一条绑定：依赖 my-property\n    width: root.my-property * 20px;\n}",
+  "cap": "声明关系，框架维持同步",
+  "err": ""
+ },
+ {
+  "ep": 9,
+  "slide": 9,
+  "title": "property<<em>类型</em>> 名字",
+  "lang": "slint",
+  "src": "export component Example {\n    property<int> my-property;\n    // 带默认值\n    property<int> my-second-property: 42;\n}",
+  "cap": "类型必填，默认值可选",
+  "err": ""
+ },
+ {
+  "ep": 9,
+  "slide": 10,
+  "title": "空属性不是<em>不存在</em>",
+  "lang": "slint",
+  "src": "component Example {\n    property <int> count;        // 0\n    property <bool> ready;       // false\n    property <string> title;     // \"\"\n    property <length> gap;       // 0px\n}",
+  "cap": "没写默认值就是类型零值",
+  "err": ""
+ },
+ {
+  "ep": 9,
+  "slide": 12,
+  "title": "in / out / <em>in-out</em> / private",
+  "lang": "slint",
+  "src": "export component Button {\n    in property <string> text;      // 外部设\n    out property <bool> pressed;    // 外部读\n    in-out property <bool> checked; // 双向\n    private property <bool> has-mouse; // 内部\n}",
+  "cap": "限定符就是组件的接口文档",
+  "err": ""
+ },
+ {
+  "ep": 9,
+  "slide": 14,
+  "title": "先想<em>谁写谁读</em>",
+  "lang": "slint",
+  "src": "export component Button {\n    in property <string> text;         // 使用者设文字\n    out property <bool> pressed;       // 按钮报告按下\n    in-out property <bool> checked;    // 两边都能改\n    private property <bool> has-mouse; // 内部实现\n}",
+  "cap": "限定符就是组件对外的契约",
+  "err": ""
+ },
+ {
+  "ep": 9,
+  "slide": 16,
+  "title": "子元素的属性<em>不自动出门</em>",
+  "lang": "slint",
+  "src": "export component MyButton inherits Rectangle {\n    in-out property <string> text <=> txt.text;\n\n    txt := Text { text: \"默认\"; }\n}",
+  "cap": "顶层属性加双向绑定，等于把子元素属性搬出来",
+  "err": ""
+ },
+ {
+  "ep": 9,
+  "slide": 17,
+  "title": "get_ 与 <em>set_</em>",
+  "lang": "rust",
+  "src": "fn main() -> Result<(), slint::PlatformError> {\n    let ui = App::new()?;\n    ui.set_text(\"确定\".into());      // in / in-out 可写\n    let pressed = ui.get_pressed();  // out / in-out 可读\n    ui.on_clicked(|| { /* ... */ });\n    ui.run()\n}",
+  "cap": "属性名短横线，方法名下划线",
+  "err": ""
+ },
+ {
+  "ep": 9,
+  "slide": 18,
+  "title": "<em><=></em> 让两个属性一体",
+  "lang": "slint",
+  "src": "export component MyButton inherits Rectangle {\n    in-out property <string> text <=> txt.text;\n    callback clicked <=> touch.clicked;\n\n    txt := Text { text: \"默认文字\"; }\n    touch := TouchArea { }\n}",
+  "cap": "<=> 声明两个名字共享同一份数据",
+  "err": ""
+ },
+ {
+  "ep": 9,
+  "slide": 20,
+  "title": "<=> 转发<em>事件</em>",
+  "lang": "slint",
+  "src": "export component MyButton inherits Rectangle {\n    callback clicked <=> touch.clicked;\n\n    touch := TouchArea { }\n}\n\n// 也能指向全局：callback magic <=> Logic.magic;",
+  "cap": "回调别名 = 一个名字转发到另一个",
+  "err": ""
+ },
+ {
+  "ep": 10,
+  "slide": 4,
+  "title": "<em>px 与 %</em>",
+  "lang": "slint",
+  "src": "Rectangle {\n    width: 64px;        // 逻辑像素\n    height: parent.height * 50%;   // 相对父元素\n}",
+  "cap": "单位不同就不许混算，编译期拦截",
+  "err": ""
+ },
+ {
+  "ep": 10,
+  "slide": 6,
+  "title": "除以 1px，<em>换算成数字</em>",
+  "lang": "slint",
+  "src": "export component Example {\n    in-out property <length> w: 3 * 1px;\n    in-out property <float> num: self.w / 1px;\n    in-out property <length> back: num * 1px;\n    in-out property <length> zero: 0;  // 字面量 0 通吃\n}",
+  "cap": "乘 1px 产生长度，除以 1px 得到数字",
+  "err": ""
+ },
+ {
+  "ep": 10,
+  "slide": 8,
+  "title": "小数点<em>跟着区域走</em>",
+  "lang": "slint",
+  "src": "export component Example {\n    in-out property <float> pi: 3.14159;\n    out property <string> fixed: pi.to-fixed(2);\n    out property <string> plain:\n        pi.to-string-unlocalized();\n}",
+  "cap": "要跨区域传的文本，自己指定格式",
+  "err": ""
+ },
+ {
+  "ep": 10,
+  "slide": 10,
+  "title": "命名的<em>数据打包</em>",
+  "lang": "slint",
+  "src": "export struct Player {\n    name: string,\n    score: int,\n}\n\nexport component Example {\n    in-out property<Player> player: {\n        name: \"Foo\", score: 100\n    };\n}",
+  "cap": "export 后宿主语言生成对应类型",
+  "err": ""
+ },
+ {
+  "ep": 10,
+  "slide": 11,
+  "title": "等号后面<em>必须是常量</em>",
+  "lang": "slint",
+  "src": "export struct Player {\n    name: string = \"unknown\",\n    score: int = 100,\n}\n\nexport component Example {\n    in-out property<Player> p: { score: 42 };\n    // name 取默认值，score 是 42\n}",
+  "cap": "漏写的字段拿默认值",
+  "err": ""
+ },
+ {
+  "ep": 10,
+  "slide": 12,
+  "title": "不是同一个<em>类型</em>",
+  "lang": "slint",
+  "src": "export struct Player {\n    name: string,\n    score: int,\n}\n\nexport component Example {\n    in-out property<{name: string, score: int}> a:\n        { name: \"A\" };\n    in-out property<Player> b: { name: \"B\", score: 1 };\n}",
+  "cap": "匿名的 {a: T} 与具名 struct 互不兼容",
+  "err": ""
+ },
+ {
+  "ep": 10,
+  "slide": 13,
+  "title": "有限的<em>可能性集合</em>",
+  "lang": "slint",
+  "src": "export enum CardSuit { clubs, diamonds, hearts, spade }\n\nexport component Example {\n    in-out property<CardSuit> card: spade;\n    out property<bool> is-clubs:\n        card == CardSuit.clubs;\n}",
+  "cap": "类型已知处可省略类型前缀",
+  "err": ""
+ },
+ {
+  "ep": 10,
+  "slide": 15,
+  "title": "\\{表达式} <em>直接嵌入</em>",
+  "lang": "slint",
+  "src": "Text {\n    text: \"Value: \\{round(slider.value)}\";\n}\n// 等价于 \"Value: \" + round(slider.value)",
+  "cap": "\\{...} 是字符串插值",
+  "err": ""
+ },
+ {
+  "ep": 10,
+  "slide": 16,
+  "title": "反斜杠<em>只认老朋友</em>",
+  "lang": "slint",
+  "src": "export component Example {\n    in-out property <int> i: 1;\n    Text {\n        text: \"他说：\\\"你好\\\"\\n第 \\{i + 1} 条\";\n    }\n}\n// \\\" 引号   \\\\ 反斜杠   \\n 换行\n// \\u{1F600} 码点   \\{...} 插值",
+  "cap": "转义表很短，超出这个范围就是错误",
+  "err": ""
+ },
+ {
+  "ep": 10,
+  "slide": 17,
+  "title": "写进 Rust 就<em>失效</em>",
+  "lang": "rust",
+  "src": "// 宏里不能写 \\{...} 插值\nslint::slint! {\n    export component App inherits Window {\n        in property <string> label;\n        Text { text: label; }\n    }\n}\n\nfn main() {\n    let app = App::new();\n    app.set_label(format!(\"Count: {}\", 3).into());\n}",
+  "cap": "格式化交给 Rust，展示交给 Slint",
+  "err": ""
+ },
+ {
+  "ep": 10,
+  "slide": 18,
+  "title": "<em>[T]</em> 类型",
+  "lang": "slint",
+  "src": "in property <[string]> names: [\"a\", \"b\"];\n// for name in names : Text { text: name; }\n// names.length / names[0]\n// names.push(\"c\") / insert / remove",
+  "cap": "数组即模型，可被 for 消费",
+  "err": ""
+ },
+ {
+  "ep": 10,
+  "slide": 19,
+  "title": "不报错，<em>也不告诉你</em>",
+  "lang": "slint",
+  "src": "export component Example {\n    in-out property <[int]> items: [1, 2, 3];\n    out property <int> len: items.length;  // 3\n    out property <int> past: items[5];     // 0\n\n    init => {\n        items.remove(9);      // 越界：不做任何事\n        items.insert(3, 10);  // 等于追加，合法\n    }\n}",
+  "cap": "越界访问返回默认值，写入无声失败",
+  "err": ""
+ },
+ {
+  "ep": 10,
+  "slide": 21,
+  "title": "开着几道<em>窄门</em>",
+  "lang": "slint",
+  "src": "export component Example {\n    in-out property <int> cut: 45.8;       // 45\n    in-out property <float> up: 42;        // 42.0\n    in-out property <string> s: \"n=\" + 42; // 文本拼接\n    // in-out property <int> bad: 12px;    // 报错\n}",
+  "cap": "浮点转整数是截断，不是四舍五入",
+  "err": ""
+ },
+ {
+  "ep": 11,
+  "slide": 4,
+  "title": "算术、比较、<em>逻辑与三元</em>",
+  "lang": "slint",
+  "src": "Rectangle {\n    touch := TouchArea {}\n    background: touch.pressed ? #111 : #eee;\n    border-color: !touch.enabled ? #888\n        : touch.pressed ? #aaa\n        : #555;\n}",
+  "cap": "三元嵌套是声明式的常见笔法",
+  "err": ""
+ },
+ {
+  "ep": 11,
+  "slide": 5,
+  "title": "百分号是<em>单位</em>",
+  "lang": "slint",
+  "src": "export component Example {\n    in-out property <length> w: 100px;\n    in-out property <length> h: 50px;\n    out property <float> ratio: self.w / self.h;\n    out property <int> r: Math.mod(7, 4);  // 3\n    // 50% 里的 % 是单位，不是取余\n}",
+  "cap": "长度除长度得到数字，这是标准写法",
+  "err": ""
+ },
+ {
+  "ep": 11,
+  "slide": 6,
+  "title": "比较与逻辑<em>不可结合</em>",
+  "lang": "slint",
+  "src": "export component Example {\n    in-out property <bool> a;\n    in-out property <bool> b;\n    in-out property <bool> c;\n    // a == b == c  报错：比较不可连写\n    out property <bool> same: (a == b) && (b == c);\n    out property <bool> either: (a && b) || c;\n}",
+  "cap": "连写一律报错，括号是唯一解",
+  "err": ""
+ },
+ {
+  "ep": 11,
+  "slide": 7,
+  "title": "名字点属性，<em>root 与 self</em>",
+  "lang": "slint",
+  "src": "export component Example {\n    foo := Rectangle { x: 42px; }\n    x: foo.x;   // 依赖 foo.x 的绑定\n}",
+  "cap": "路径即依赖",
+  "err": ""
+ },
+ {
+  "ep": 11,
+  "slide": 9,
+  "title": "let / if / <em>赋值</em>",
+  "lang": "slint",
+  "src": "clicked => {\n    let delta = 42;        // 局部、不可变\n    if (condition) {\n        some-property += delta;\n    } else {\n        root.some-callback();\n    }\n}",
+  "cap": "语句在触发时执行，绑定持续成立",
+  "err": ""
+ },
+ {
+  "ep": 11,
+  "slide": 11,
+  "title": "给元素<em>起名字</em>用的",
+  "lang": "slint",
+  "src": "export component Example {\n    in-out property <int> counter;\n    TouchArea {\n        clicked => {\n            let step = 2;        // 局部变量不可变\n            root.counter += step;\n        }\n    }\n}",
+  "cap": "let 声明变量，冒号等号声明元素",
+  "err": ""
+ },
+ {
+  "ep": 11,
+  "slide": 13,
+  "title": "function 关键字，<em>Slint 内部</em>",
+  "lang": "slint",
+  "src": "export component Example {\n    property <string> my-property: my-function();\n\n    pure function my-function() -> string {\n        return \"result\";\n    }\n}",
+  "cap": "函数体整体在 .slint 里",
+  "err": ""
+ },
+ {
+  "ep": 11,
+  "slide": 15,
+  "title": "比属性<em>多一档</em>",
+  "lang": "slint",
+  "src": "export component Base {\n    public function hello() { debug(\"hi\"); }\n    protected function inner() { debug(\"in\"); }\n    private function local() { debug(\"lo\"); }\n}\n\nexport component Sub inherits Base {\n    init => { self.inner(); }   // 直接继承：可以\n}",
+  "cap": "protected 只对直接子类开放",
+  "err": ""
+ },
+ {
+  "ep": 11,
+  "slide": 16,
+  "title": "两个<em>修饰词</em>的含义",
+  "lang": "slint",
+  "src": "export component HasFunction {\n    public pure function double(x: int) -> int {\n        return x * 2;\n    }\n}\n\nexport component CallsFunction {\n    property <int> test: my-friend.double(1);\n    my-friend := HasFunction { }\n}",
+  "cap": "pure 才能进绑定，public 才能跨组件",
+  "err": ""
+ },
+ {
+  "ep": 11,
+  "slide": 21,
+  "title": "点着用的<em>数学函数</em>",
+  "lang": "slint",
+  "src": "export component Example {\n    out property <float> d: (-10).abs();\n    out property <int> n: 3.6.round();      // 4\n    out property <length> s: (-10px).abs(); // 10px\n}\n// Math.abs(x) 与 abs(x) 与 x.abs() 等价",
+  "cap": "带单位的类型也能点着算",
+  "err": ""
+ },
+ {
+  "ep": 11,
+  "slide": 22,
+  "title": "用户打字<em>等于赋值</em>",
+  "lang": "slint",
+  "src": "export component Editor {\n    // 双向绑定：用户输入写回 draft\n    in-out property <string> draft <=> input.text;\n    input := TextInput { }\n}\n\n// 写成 text: draft; 的话，第一次输入后绑定就断了",
+  "cap": "要双向同步，就得用双向绑定",
+  "err": ""
+ },
+ {
+  "ep": 12,
+  "slide": 4,
+  "title": "声明、处理、<em>触发</em>",
+  "lang": "slint",
+  "src": "export component Example inherits Rectangle {\n    callback hello;               // 声明\n    area := TouchArea {\n        clicked => {              // 处理\n            root.hello();          // 触发\n        }\n    }\n}",
+  "cap": "三步：声明 → 处理 → 触发",
+  "err": ""
+ },
+ {
+  "ep": 12,
+  "slide": 5,
+  "title": "安静地<em>什么都不做</em>",
+  "lang": "slint",
+  "src": "export component Banner inherits Rectangle {\n    callback dismissed;\n    pure callback pick(int) -> int;\n    // 没有处理器：调用返回 int 的默认值 0\n    out property <int> picked: pick(1);\n}",
+  "cap": "触发没人接的回调，等于什么都不做",
+  "err": ""
+ },
+ {
+  "ep": 12,
+  "slide": 7,
+  "title": "callback <em>hello(int,int) -> int</em>",
+  "lang": "slint",
+  "src": "export component Example inherits Rectangle {\n    callback hello(int, int) -> int;\n    hello(aa, bb) => { aa + bb }\n}\n// 本侧声明并实现；也可以只声明，\n// 处理器留给 Rust 的 on_hello 注册",
+  "cap": "参数与返回值照常标类型",
+  "err": ""
+ },
+ {
+  "ep": 12,
+  "slide": 8,
+  "title": "只是<em>给人看的注释</em>",
+  "lang": "slint",
+  "src": "export component Fancy {\n    callback picked(foo: int, bar: string);\n\n    picked(number, text) => {   // 名字随便起\n        debug(number, text);\n    }\n}",
+  "cap": "声明里的名字无意义，类型才是约定",
+  "err": ""
+ },
+ {
+  "ep": 12,
+  "slide": 9,
+  "title": "<em><=></em> 重命名回调",
+  "lang": "slint",
+  "src": "export component Example inherits Rectangle {\n    callback clicked <=> area.clicked;\n    area := TouchArea { }\n}",
+  "cap": "两个名字，同一个回调",
+  "err": ""
+ },
+ {
+  "ep": 12,
+  "slide": 11,
+  "title": "global Name <em>{ ... }</em>",
+  "lang": "slint",
+  "src": "global Palette {\n    in-out property<color> primary: blue;\n    in-out property<color> secondary: green;\n}\n\nexport component Example inherits Rectangle {\n    background: Palette.primary;\n    border-color: Palette.secondary;\n}",
+  "cap": "定义一次，处处引用",
+  "err": ""
+ },
+ {
+  "ep": 12,
+  "slide": 13,
+  "title": "换不了<em>像素单位</em>",
+  "lang": "slint",
+  "src": "global Metrics {\n    // 全局没有窗口，也就没有缩放系数\n    // in-out property <float> k: 100px / 1phx;\n}\n\nexport component App inherits Window {\n    out property <float> k: 100px / 1phx;  // 可以\n}",
+  "cap": "换算依赖像素比，只能写在组件里",
+  "err": ""
+ },
+ {
+  "ep": 12,
+  "slide": 15,
+  "title": "export global <em>Logic</em>",
+  "lang": "slint",
+  "src": "export global Logic {\n    in-out property <int> the-value;\n    pure callback magic-operation(int) -> int;\n}\n\n// Rust 侧：\napp.global::<Logic>().on_magic_operation(|v| v * 2);\napp.global::<Logic>().set_the_value(42);",
+  "cap": "全局是宿主可见的另一扇门",
+  "err": ""
+ },
+ {
+  "ep": 12,
+  "slide": 16,
+  "title": "要在<em>主组件文件</em>里导出",
+  "lang": "rust",
+  "src": "// app.slint：\n// export global Logic {\n//     in-out property <int> the-value;\n//     pure callback magic-operation(int) -> int;\n// }\nslint::include_modules!();\n\nfn main() {\n    let app = App::new();\n    app.global::<Logic>().set_the_value(42);\n    app.global::<Logic>().on_magic_operation(|v| v * 2);\n    app.run().unwrap();\n}",
+  "cap": "泛型方法拿到单例句柄，套路同组件",
+  "err": ""
+ },
+ {
+  "ep": 12,
+  "slide": 17,
+  "title": "to-upper-case <em>示例</em>",
+  "lang": "slint",
+  "src": "Text {\n    // 绑定里调用全局回调\n    text: Logic.to-upper-case(input.text);\n}\n// Rust: recipe.global::<Logic>()\n//        .on_to_upper_case(|s| s.to_uppercase())",
+  "cap": "绑定 → 全局 → 宿主，三层贯通",
+  "err": ""
+ },
+ {
+  "ep": 12,
+  "slide": 18,
+  "title": "使用者<em>看不到全局</em>",
+  "lang": "slint",
+  "src": "export component Card {\n    in-out property <int> value <=> Logic.the-value;\n    pure callback magic <=> Logic.magic-operation;\n\n    Text { text: root.value; }\n}",
+  "cap": "组件对外只暴露自己的属性名",
+  "err": ""
+ },
+ {
+  "ep": 12,
+  "slide": 20,
+  "title": "changed 加<em>属性名</em>",
+  "lang": "slint",
+  "src": "export component Counter {\n    in-out property <int> value;\n\n    changed value => {\n        debug(\"value:\", self.value);  // 排队执行\n    }\n}",
+  "cap": "变化回调不是立即调用，是排队",
+  "err": ""
+ },
+ {
+  "ep": 13,
+  "slide": 4,
+  "title": "一个声明，<em>处处生效</em>",
+  "lang": "slint",
+  "src": "export component Example inherits Window {\n    background: area.pressed ? blue : red;\n    animate background {\n        duration: 250ms;\n    }\n    area := TouchArea { }\n}",
+  "cap": "改值的来源不重要，动画总会播放",
+  "err": ""
+ },
+ {
+  "ep": 13,
+  "slide": 7,
+  "title": "duration delay <em>easing</em>",
+  "lang": "slint",
+  "src": "animate x, y {\n    duration: 100ms;\n    easing: ease-out-bounce;\n}",
+  "cap": "一条声明管多个属性",
+  "err": ""
+ },
+ {
+  "ep": 13,
+  "slide": 8,
+  "title": "换目标时<em>保留速度</em>",
+  "lang": "slint",
+  "src": "Rectangle {\n    area := TouchArea { }\n    x: area.pressed ? 150px : 0px;\n    animate x {\n        duration: 500ms;\n        easing: spring(0.5);\n    }\n}",
+  "cap": "回弹系数越大，收得越慢",
+  "err": ""
+ },
+ {
+  "ep": 13,
+  "slide": 9,
+  "title": "用时间<em>不要用 animate</em>",
+  "lang": "slint",
+  "src": "Rectangle {\n    width: 20px;\n    height: 20px;\n    // 与属性变化无关的持续动画\n    x: 100px + sin(animation-tick() / 1s * 360deg) * 50px;\n}",
+  "cap": "时间一直在走，位置就一直在变",
+  "err": ""
+ },
+ {
+  "ep": 13,
+  "slide": 10,
+  "title": "delay 实现<em>先后顺序</em>",
+  "lang": "slint",
+  "src": "rect := Rectangle {\n    animate x { duration: 500ms; }\n    animate y {\n        duration: 250ms;\n        delay: 500ms;   // 接在 x 后面跑\n    }\n}",
+  "cap": "delay 编排动画顺序",
+  "err": ""
+ },
+ {
+  "ep": 13,
+  "slide": 12,
+  "title": "条件命名<em>一组属性值</em>",
+  "lang": "slint",
+  "src": "property <bool> active: true;\nstates [\n    active when active && !ta.has-hover: {\n        label.text: \"Active\";\n        root.background: blue;\n    }\n    inactive when !active: {\n        label.text: \"Inactive\";\n        root.background: gray;\n    }\n]",
+  "cap": "状态 = 命名 + 条件 + 属性组",
+  "err": ""
+ },
+ {
+  "ep": 13,
+  "slide": 13,
+  "title": "不是<em>修改属性</em>",
+  "lang": "slint",
+  "src": "export component Light inherits Rectangle {\n    in-out property <bool> on: false;\n    background: self.on ? #333333 : #eeeeee;\n\n    states [\n        lit when self.on: {\n            background: #34CE57;  // 激活期间接管\n        }\n    ]\n}",
+  "cap": "状态值优先于绑定，退出后绑定回来",
+  "err": ""
+ },
+ {
+  "ep": 13,
+  "slide": 14,
+  "title": "第一个命中<em>说了算</em>",
+  "lang": "slint",
+  "src": "export component Example inherits Rectangle {\n    in-out property <int> level;\n    states [\n        error when level > 10: { background: red; }\n        warn  when level > 5:  { background: orange; }\n        idle  when true:       { background: gray; }\n    ]\n}\n// level = 12：三条都成立，取第一条",
+  "cap": "越特殊的越往上放",
+  "err": ""
+ },
+ {
+  "ep": 13,
+  "slide": 17,
+  "title": "in 是进入，<em>out 是离开</em>",
+  "lang": "slint",
+  "src": "states [\n    disabled when !root.is-enabled : {\n        background: gray;\n        out {\n            animate * { duration: 800ms; }\n        }\n    }\n]",
+  "cap": "离开状态时的统一过渡",
+  "err": ""
+ },
+ {
+  "ep": 13,
+  "slide": 18,
+  "title": "写在<em>状态块里面</em>",
+  "lang": "slint",
+  "src": "export component Example inherits Rectangle {\n    in-out property <bool> pressed;\n    states [\n        down when pressed: {\n            background: blue;\n            in  { animate background { duration: 120ms; } }\n            out { animate * { duration: 400ms; } }\n        }\n    ]\n}",
+  "cap": "进入快、离开慢，分别调",
+  "err": ""
+ },
+ {
+  "ep": 13,
+  "slide": 20,
+  "title": "实战里的<em>组合拳</em>",
+  "lang": "slint",
+  "src": "// 幕布：绑定 + 属性动画\nwidth: open_curtain ? 0px : (parent.width / 2);\nanimate width { duration: 250ms; easing: ease-in; }\n\n// 配对成功：颜色过渡\nbackground: solved ? #34CE57 : #3960D5;\nanimate background { duration: 800ms; }",
+  "cap": "简单场景绑定就够，复杂切换用 states",
+  "err": ""
+ },
+ {
+  "ep": 13,
+  "slide": 21,
+  "title": "一个属性，<em>一条绑定</em>",
+  "lang": "slint",
+  "src": "export component Btn inherits Rectangle {\n    in-out property <bool> hovered;\n    area := TouchArea { }\n    background: hovered ? #3960D5 : #2B2B2B;\n    animate background { duration: 200ms; }\n    states [\n        pressed when area.pressed: {\n            background: #1B1B1B;\n            border-color: #000000;\n        }\n    ]\n}",
+  "cap": "单属性用绑定，成套的值用 states",
+  "err": ""
+ },
+ {
+  "ep": 14,
+  "slide": 6,
+  "title": "相对<em>父元素</em>",
+  "lang": "slint",
+  "src": "Rectangle {\n    x: 100px;   // 相对父元素\n    width: parent.width - self.x;  // 绑定算尺寸\n}",
+  "cap": "px 推荐使用，自动适配高分屏",
+  "err": ""
+ },
+ {
+  "ep": 14,
+  "slide": 7,
+  "title": "px 与 <em>phx</em>",
+  "lang": "slint",
+  "src": "Rectangle {\n    width: 200px;        // 逻辑像素，跟随系统缩放\n    height: 120px;\n    border-width: 1phx;  // 物理像素，日常很少用\n}",
+  "cap": "推荐 px，phx 只在像素级对齐时才出现",
+  "err": ""
+ },
+ {
+  "ep": 14,
+  "slide": 11,
+  "title": "子元素<em>撑起父元素</em>",
+  "lang": "slint",
+  "src": "HorizontalLayout {\n    Rectangle {\n        in property <bool> show-title: true;\n        // 1.19 起，if 里的 Text 也参与父元素尺寸计算\n        if show-title: Text {\n            text: parent.width > 200px ? \"Report\" : \"Q3\";\n        }   // 子读父宽，父又跟着子变大\n    }\n}",
+  "cap": "条件元素参与父尺寸后，父子互读就成了环",
+  "err": "error: The binding for the property 'text' is part of a binding loop"
+ },
+ {
+  "ep": 14,
+  "slide": 12,
+  "title": "Vertical <em>Horizontal Grid</em>",
+  "lang": "slint",
+  "src": "export component Example inherits Window {\n    HorizontalLayout {\n        spacing: 5px;\n        padding: 10px;\n        Rectangle { background: blue; }\n        Rectangle { background: yellow; }\n    }\n}",
+  "cap": "默认拉伸占满，spacing 分隔",
+  "err": ""
+ },
+ {
+  "ep": 14,
+  "slide": 13,
+  "title": "留白与<em>间距</em>",
+  "lang": "slint",
+  "src": "VerticalLayout {\n    spacing: 8px;\n    padding-left: 24px;\n    padding-right: 24px;\n    padding-top: 12px;\n    padding-bottom: 12px;\n    for row in root.rows : Text { text: row; }\n}",
+  "cap": "spacing 管兄弟，padding 管边界",
+  "err": ""
+ },
+ {
+  "ep": 14,
+  "slide": 15,
+  "title": "Row 或 <em>row/col</em>",
+  "lang": "slint",
+  "src": "GridLayout {\n    spacing: 5px;\n    Row {\n        Rectangle { background: red; }\n        Rectangle { background: blue; }\n    }\n    Row {\n        Rectangle { background: yellow; }\n        Rectangle { background: green; }\n    }\n}",
+  "cap": "Row 分行，或直接写 row/col",
+  "err": ""
+ },
+ {
+  "ep": 14,
+  "slide": 16,
+  "title": "网格的<em>两种写法</em>",
+  "lang": "slint",
+  "src": "GridLayout {\n    spacing: 5px;\n    Rectangle { background: red; }\n    Rectangle { background: blue; }\n    Rectangle { background: yellow; row: 1; }\n    Rectangle { background: green; }\n    Rectangle { background: black; col: 2; row: 0; }\n}",
+  "cap": "Row 分行，或者直接标 row / col",
+  "err": ""
+ },
+ {
+  "ep": 14,
+  "slide": 18,
+  "title": "alignment 与 <em>stretch</em>",
+  "lang": "slint",
+  "src": "HorizontalLayout {\n    Rectangle { background: navy; horizontal-stretch: 2; }\n    Rectangle { background: gray; }   // stretch 1\n    // 空间分配比例 2 : 1\n}",
+  "cap": "stretch 默认 1，0 表示不拉伸",
+  "err": ""
+ },
+ {
+  "ep": 14,
+  "slide": 20,
+  "title": "对齐管<em>哪一根轴</em>",
+  "lang": "slint",
+  "src": "VerticalLayout {\n    alignment: start;               // 主轴：上下\n    cross-axis-alignment: center;   // 交叉轴：左右\n    Text { text: \"标题\"; }\n    Rectangle { width: 120px; height: 40px; }\n}",
+  "cap": "alignment 管主轴，交叉轴另有开关",
+  "err": ""
+ },
+ {
+  "ep": 14,
+  "slide": 21,
+  "title": "动态<em>增减元素</em>",
+  "lang": "slint",
+  "src": "HorizontalLayout {\n    Rectangle { background: green; }\n    if root.show-details : Rectangle {\n        background: orange;\n    }\n    Rectangle { background: blue; }\n}\n// show-details = false 时，绿蓝平分宽度",
+  "cap": "if 移除元素，visible 只隐藏",
+  "err": ""
+ },
+ {
+  "ep": 14,
+  "slide": 22,
+  "title": "容器组件的<em>插入位</em>",
+  "lang": "slint",
+  "src": "component BoxWithLabel inherits GridLayout {\n    Row { Text { text: \"标题\"; } }\n    Row {\n        @children    // 使用处写的子元素落在这里\n    }\n}\n\nexport component App inherits Window {\n    BoxWithLabel {\n        Rectangle { background: blue; }\n        Rectangle { background: yellow; }\n    }\n}",
+  "cap": "一个组件最多一个 @children",
+  "err": ""
+ },
+ {
+  "ep": 15,
+  "slide": 3,
+  "title": "from <em>\"std-widgets.slint\"</em>",
+  "lang": "slint",
+  "src": "import { Button, Slider } from \"std-widgets.slint\";\n\nexport component Recipe inherits Window {\n    Button { text: \"OK\"; }\n}",
+  "cap": "内置元素免导入，组件要导入",
+  "err": ""
+ },
+ {
+  "ep": 15,
+  "slide": 4,
+  "title": "导入的<em>两个来源</em>",
+  "lang": "slint",
+  "src": "// 标准组件库\nimport { Button, VerticalBox } from \"std-widgets.slint\";\n// 自己文件里的组件\nimport { Card } from \"./card.slint\";\n// 不写 export，外面就用不了\nexport { Card }",
+  "cap": "内置元素免导入，跨文件要 export",
+  "err": ""
+ },
+ {
+  "ep": 15,
+  "slide": 7,
+  "title": "列表只为<em>可见行</em>而生",
+  "lang": "slint",
+  "src": "ListView {\n    for row in root.rows : Rectangle {\n        height: 40px;\n        Text { text: row.title; }\n    }\n}",
+  "cap": "只造可见的行，所以能撑住长列表",
+  "err": ""
+ },
+ {
+  "ep": 15,
+  "slide": 9,
+  "title": "默认 <em>fluent</em>，可选 material",
+  "lang": "slint",
+  "src": "import { Palette } from \"std-widgets.slint\";\n\nRectangle {\n    background: Palette.control-background;\n}",
+  "cap": "取色走 Palette，跟随所选风格",
+  "err": ""
+ },
+ {
+  "ep": 15,
+  "slide": 11,
+  "title": "取色走<em>Palette</em>",
+  "lang": "slint",
+  "src": "import { Palette } from \"std-widgets.slint\";\n\nRectangle {\n    background: Palette.background;\n    border-color: Palette.border;\n    Text { color: Palette.foreground; }\n}",
+  "cap": "颜色只读，由风格填；写死色值会脱离主题",
+  "err": ""
+ },
+ {
+  "ep": 15,
+  "slide": 15,
+  "title": "外观 + 行为 + <em>接口</em>",
+  "lang": "slint",
+  "src": "component Button inherits Rectangle {\n    in-out property text <=> txt.text;\n    callback clicked <=> touch.clicked;\n    border-radius: root.height / 2;\n    background: touch.pressed ? #6b8282\n        : touch.has-hover ? #6c616c : #456;\n    height: txt.preferred-height * 1.33;\n    min-width: txt.preferred-width + 20px;\n    txt := Text { }\n    touch := TouchArea { }\n}",
+  "cap": "preferred 尺寸 + 双向绑定接口",
+  "err": ""
+ },
+ {
+  "ep": 15,
+  "slide": 16,
+  "title": "按钮配方<em>逐行看</em>",
+  "lang": "slint",
+  "src": "component Button inherits Rectangle {\n    in-out property text <=> txt.text;\n    callback clicked <=> touch.clicked;\n    border-radius: root.height / 2;\n    border-width: 1px;\n    border-color: root.background.darker(25%);\n    background: touch.pressed ? #6b8282\n        : touch.has-hover ? #6c616c : #456;\n    height: txt.preferred-height * 1.33;\n    min-width: txt.preferred-width + 20px;\n    txt := Text {\n        x: (parent.width - self.width) / 2;\n        y: (parent.height - self.height) / 2;\n        color: touch.pressed ? #fff : #eee;\n    }\n    touch := TouchArea { }\n}",
+  "cap": "外观三档 + 尺寸由内容推 + 两行接口",
+  "err": ""
+ },
+ {
+  "ep": 15,
+  "slide": 18,
+  "title": "动画<em>长在属性上</em>",
+  "lang": "slint",
+  "src": "bubble := Rectangle {\n    property <float> a: root.checked ? 1 : 0;\n    x: 4px + self.a * (indicator.width\n        - bubble.width - 8px);\n    animate a { duration: 200ms; easing: ease; }\n}",
+  "cap": "辅助属性 a 承载动画，x 只管几何",
+  "err": ""
+ },
+ {
+  "ep": 15,
+  "slide": 19,
+  "title": "开关的<em>状态机</em>",
+  "lang": "slint",
+  "src": "indicator := Rectangle {\n    width: 40px;\n    border-radius: root.height / 2;\n    background: root.checked ? blue : white;\n\n    bubble := Rectangle {\n        width: root.height - 8px;\n        property <float> a: root.checked ? 1 : 0;\n        x: 4px + self.a * (indicator.width - bubble.width - 8px);\n        animate a { duration: 200ms; }\n    }\n}\n\ntouch-area := TouchArea {\n    clicked => {\n        root.checked = !root.checked;\n        root.toggled();\n    }\n}",
+  "cap": "辅助属性承载动画，x 只管几何",
+  "err": ""
+ },
+ {
+  "ep": 15,
+  "slide": 20,
+  "title": "拖拽里的<em>算术</em>",
+  "lang": "slint",
+  "src": "touch := TouchArea {\n    property <float> pressed-value;\n    moved => {\n        if (self.enabled && self.pressed) {\n            root.value = max(root.minimum, min(root.maximum,\n                self.pressed-value + (self.mouse-x - self.pressed-x)\n                * (root.maximum - root.minimum) / (root.width - handle.width)));\n        }\n    }\n}",
+  "cap": "记基准值 + 位移差 + 夹紧上下限",
+  "err": ""
+ },
+ {
+  "ep": 15,
+  "slide": 21,
+  "title": "回调<em>换到 Rust</em>",
+  "lang": "slint",
+  "src": "// Slint 侧\ncallback button-pressed <=> button.clicked;\n\n// Rust 侧\nrecipe.on_button_pressed(move || {\n    let r = recipe_weak.upgrade().unwrap();\n    let mut v = r.get_counter();\n    v += 1;\n    r.set_counter(v);\n});",
+  "cap": "- 与 _ 在宿主语言里统一为 _",
+  "err": ""
+ },
+ {
+  "ep": 15,
+  "slide": 22,
+  "title": "弱引用<em>断开循环</em>",
+  "lang": "rust",
+  "src": "let recipe = Recipe::new().unwrap();\nlet recipe_weak = recipe.as_weak();\n\nrecipe.on_button_pressed(move || {\n    let recipe = recipe_weak.upgrade().unwrap();\n    let mut v = recipe.get_counter();\n    v += 1;\n    recipe.set_counter(v);\n});\n\nrecipe.run().unwrap();",
+  "cap": "as_weak 进回调，upgrade 再取回来",
+  "err": ""
+ },
+ {
+  "ep": 16,
+  "slide": 3,
+  "title": "整数、数组、<em>宿主模型</em>",
+  "lang": "slint",
+  "src": "for i in 3 : Text { text: \"行\"; }        // 整数\nfor c in [#e11, #1a2] : Rectangle { }        // 数组\nfor item in root.model : Item { }            // 模型",
+  "cap": "界面代码完全一样",
+  "err": ""
+ },
+ {
+  "ep": 16,
+  "slide": 4,
+  "title": "两个可选<em>标识符</em>",
+  "lang": "slint",
+  "src": "export component MainWindow inherits Window {\n    for tile[i] in root.tiles : MemoryTile {\n        x: mod(i, 4) * 74px;\n        y: floor(i / 4) * 74px;\n    }\n}",
+  "cap": "条目名与下标可以各取所需",
+  "err": ""
+ },
+ {
+  "ep": 16,
+  "slide": 6,
+  "title": "Rust 侧的 <em>trait Model</em>",
+  "lang": "slint",
+  "src": "let tiles_model = std::rc::Rc::new(\n    slint::VecModel::from(tiles));\nmain_window.set_memory_tiles(tiles_model.into());\n// 局部更新：\ntiles_model.set_row_data(idx, tile);",
+  "cap": "改模型 → 自动通知 → 界面刷新",
+  "err": ""
+ },
+ {
+  "ep": 16,
+  "slide": 8,
+  "title": "共享一份<em>模型</em>",
+  "lang": "rust",
+  "src": "let model = std::rc::Rc::new(slint::VecModel::from(tiles));\nui.set_tiles(model.clone().into());\n\nlet weak = ui.as_weak();\nui.on_reset(move || {\n    let ui = weak.upgrade().unwrap();\n    ui.set_tiles(model.clone().into());\n});",
+  "cap": "Rc 共享数据，as_weak 断开循环",
+  "err": ""
+ },
+ {
+  "ep": 16,
+  "slide": 11,
+  "title": "写回模型的<em>那一句</em>",
+  "lang": "slint",
+  "src": "for tile[i] in root.tiles : MemoryTile {\n    open_curtain: tile.image_visible || tile.solved;\n    clicked => {\n        tile.image_visible = true;   // 直接写回模型\n    }\n}",
+  "cap": "for 里的双向绑定会同步回模型条目",
+  "err": ""
+ },
+ {
+  "ep": 16,
+  "slide": 13,
+  "title": "三个返回值<em>要认</em>",
+  "lang": "rust",
+  "src": "fn main() -> Result<(), slint::PlatformError> {\n    let ui = MainWindow::new()?;\n    ui.on_reset(|| { /* 耗时活别放这儿 */ });\n    ui.run()\n}",
+  "cap": "new 与 run 都返回 Result",
+  "err": ""
+ },
+ {
+  "ep": 16,
+  "slide": 14,
+  "title": "别在界面线程<em>睡觉</em>",
+  "lang": "rust",
+  "src": "slint::Timer::single_shot(\n    std::time::Duration::from_secs(1),\n    move || {\n        let ui = weak.upgrade().unwrap();\n        ui.set_disable_tiles(false);\n    },\n);",
+  "cap": "延迟交给 Timer，别阻塞事件循环",
+  "err": ""
+ },
+ {
+  "ep": 16,
+  "slide": 15,
+  "title": "cargo build <em>--release</em>",
+  "lang": "slint",
+  "src": "cargo build --release\n# target/release/memory\n# UI 资源已编译进二进制",
+  "cap": "单文件产物，资源内嵌",
+  "err": ""
+ },
+ {
+  "ep": 16,
+  "slide": 19,
+  "title": "浏览器的<em>代价</em>",
+  "lang": "rust",
+  "src": "#[cfg_attr(target_family = \"wasm\", wasm_bindgen(start))]\npub fn main() {\n    let ui = MainWindow::new().unwrap();\n    ui.run().unwrap();\n}",
+  "cap": "wasm-pack 构建，页面里给一块 canvas",
+  "err": ""
+ }
+]

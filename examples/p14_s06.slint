@@ -1,0 +1,11 @@
+// 相对父元素
+// 视频定位：P14 02:02
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「包进 Window」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+export component Example inherits Window {
+    Rectangle {
+        x: 100px;   // 相对父元素
+        width: parent.width - self.x;  // 绑定算尺寸
+    }
+}

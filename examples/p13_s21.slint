@@ -1,0 +1,17 @@
+// 一个属性，一条绑定
+// 视频定位：P13 07:07
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「原样」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+export component Btn inherits Rectangle {
+    in-out property <bool> hovered;
+    area := TouchArea { }
+    background: hovered ? #3960D5 : #2B2B2B;
+    animate background { duration: 200ms; }
+    states [
+        pressed when area.pressed: {
+            background: #1B1B1B;
+            border-color: #000000;
+        }
+    ]
+}

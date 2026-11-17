@@ -1,0 +1,19 @@
+// 两个尺寸谁是源头
+// 视频定位：P04 05:33
+// 课程标注的诊断：The binding for the property 'text' is part of a binding loop
+// 来源：Slint 官方中文课程逐镜脚本，片段逐字保留，未补任何外壳。
+// 这是幻灯片上的节选，不是完整可编译单元；课程所讲的诊断需在完整组件中触发。
+// 本机 Slint 1.18.1 实测结果见 compile-fail/README.md。
+
+component Tag inherits Rectangle {
+    in property <bool> show-text: true;
+
+    HorizontalLayout {
+        Rectangle {
+            if root.show-text : Text {
+                // 父宽由内容撑开，读它就成环
+                text: parent.width > 200px ? "配对成功" : "再来";
+            }
+        }
+    }
+}

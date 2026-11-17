@@ -1,0 +1,13 @@
+# Slint 16 集课程配套：Memory Game 六个渐进工程
+# 运行：cargo run -p step06-game-logic
+[workspace]
+resolver = "2"
+members = [
+    "memory-game/step01-hello",
+    "memory-game/step02-tile",
+    "memory-game/step03-interaction",
+    "memory-game/step04-grid",
+    "memory-game/step05-shuffle",
+    "memory-game/step06-game-logic",
+    "tools/slintcheck",
+]

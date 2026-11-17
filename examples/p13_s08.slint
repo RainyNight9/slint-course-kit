@@ -1,0 +1,15 @@
+// 换目标时保留速度
+// 视频定位：P13 02:46
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「包进 Window」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+export component Example inherits Window {
+    Rectangle {
+        area := TouchArea { }
+        x: area.pressed ? 150px : 0px;
+        animate x {
+            duration: 500ms;
+            easing: spring(0.5);
+        }
+    }
+}

@@ -1,0 +1,13 @@
+// pressed 与 has-hover
+// 视频定位：P04 02:19
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「包进 Window」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+export component Example inherits Window {
+    area := TouchArea { }
+
+    Text {
+        text: area.has-hover ? "悬停中" : "移开了";
+        color: area.pressed ? red : black;
+    }
+}

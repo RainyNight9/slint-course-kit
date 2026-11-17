@@ -1,0 +1,13 @@
+// 用时间不要用 animate
+// 视频定位：P13 03:05
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「包进 Window」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+export component Example inherits Window {
+    Rectangle {
+        width: 20px;
+        height: 20px;
+        // 与属性变化无关的持续动画
+        x: 100px + sin(animation-tick() / 1s * 360deg) * 50px;
+    }
+}

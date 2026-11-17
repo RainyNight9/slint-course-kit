@@ -1,0 +1,11 @@
+// 小数点跟着区域走
+// 视频定位：P10 02:51
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「原样」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+export component Example {
+    in-out property <float> pi: 3.14159;
+    out property <string> fixed: pi.to-fixed(2);
+    out property <string> plain:
+        pi.to-string-unlocalized();
+}

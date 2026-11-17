@@ -1,0 +1,12 @@
+// 一个声明，处处生效
+// 视频定位：P13 01:18
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「原样」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+export component Example inherits Window {
+    background: area.pressed ? blue : red;
+    animate background {
+        duration: 250ms;
+    }
+    area := TouchArea { }
+}

@@ -1,0 +1,14 @@
+// global Name { ... }
+// 视频定位：P12 03:56
+// 来源：Slint 官方中文课程逐镜脚本；核心片段逐字保留，仅为独立编译补了「原样」外壳。
+// 校验：slint-interpreter 1.18.1 编译通过
+
+global Palette {
+    in-out property<color> primary: blue;
+    in-out property<color> secondary: green;
+}
+
+export component Example inherits Rectangle {
+    background: Palette.primary;
+    border-color: Palette.secondary;
+}
