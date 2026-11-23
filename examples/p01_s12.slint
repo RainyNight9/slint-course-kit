@@ -9,7 +9,8 @@ export component Example inherits Window {
     myRect := Rectangle {
         x: ta.mouse-x;
         y: ta.mouse-y;
-        width: 60px;
+        width: 160px;
+        height: 60px;
         background: ta.pressed ? orange : skyblue;
         Text {
             text: "x: " + (myRect.x / 1px);
